@@ -261,7 +261,7 @@
 <hr />
 <h2 id="use-case-1-employee-onboarding-chatbot">Use Case 1: Employee Onboarding Chatbot</h2>
 <h3 id="architecture">Architecture</h3>
-<p><code>┌─────────────────────────────────────────────────────────────┐
+<p><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">┌─────────────────────────────────────────────────────────────┐
 │                      New Employee                           │
 │  "What's our vacation policy?" "How do I add my direct      │
 │   "How do I submit expenses?"  report in the system?"       │
@@ -297,7 +297,7 @@
     │ High confidence (&gt;0.85): Auto    │
     │ Med confidence (0.60-0.85): Q&amp;A  │
     │ Low confidence (&lt;0.60): Escalate │
-    └──────────────────────────────────┘</code></p>
+    └──────────────────────────────────┘</pre></p>
 <h3 id="training-data-fine-tuning">Training Data (Fine-tuning)</h3>
 <p><strong>Data to collect</strong>: 1,200-2,000 QA pairs from:
 - Company handbook (policies, benefits, leave)
@@ -306,7 +306,7 @@
 - Department procedures (code of conduct, security)
 - Department-specific (engineering onboarding, sales onboarding)</p>
 <p><strong>Example training data format</strong>:
-<code>json
+<pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">json
 {
   "question": "What's our annual vacation allowance?",
   "answer": "US employees get 20 days/year. Europe gets 25+ per local law. Accrual: 1.67 days/month.",
@@ -409,7 +409,7 @@ FINETUNE
 ├── Phi-3 Mini (4-bit quantized): 2.5GB
 ├── Vector DB (Chroma/Weaviate in-memory): 800MB
 ├── OS + Python runtime: 500MB
-└── Headroom: 200MB</code></p>
+└── Headroom: 200MB</pre></p>
 <p><strong>Deployment (Docker recommended)</strong>:
 ```dockerfile
 FROM ollama/ollama:latest</p>
@@ -437,7 +437,7 @@ chroma = chromadb.Client(Settings(
     # 1. Retrieve context (RAG)
     results = chroma.query(query_texts=[question], n_results=3)
     context = "\n".join(results["documents"][0])</p>
-<pre><code># 2. Generate answer
+<pre><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;"># 2. Generate answer
 prompt = f"""You are an HR onboarding assistant. Answer based on company policy.
 </code></pre>
 <p>Company Policy Context:
@@ -617,7 +617,7 @@ return response["response"]
     │ Inline Suggestion Rendering │
     │ Grey text, press Tab to     │
     │ complete                    │
-    └─────────────────────────────┘</code></p>
+    └─────────────────────────────┘</pre></p>
 <p><strong>VS Code extension setup</strong>:
 ```typescript
 // extension.ts
@@ -633,7 +633,7 @@ import fetch from 'node-fetch';</p>
                     Math.max(0, position.line - 10), 0,
                     position.line, position.character
                 ));</p>
-<pre><code>            // Query local SLM
+<pre><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">            // Query local SLM
             const response = await fetch('http://localhost:8000/complete', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -698,7 +698,7 @@ VS Code running: 500MB
 Vector DB (optional, for docs): 400MB
 OS/headroom: 600MB
 ─────────────────────────────
-Total: 4.0GB (at capacity)</code></p>
+Total: 4.0GB (at capacity)</pre></p>
 <p><strong>Optimization for 4GB</strong>:
 - Load model once at startup (don't reload)
 - Batch requests if multiple developers
@@ -777,7 +777,7 @@ import time</p>
         }
         self.current_model = None
         self.load_history = {}</p>
-<pre><code>def get_file_extension(self, filepath):
+<pre><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">def get_file_extension(self, filepath):
     return Path(filepath).suffix
 
 def load_model(self, filepath):
@@ -877,7 +877,7 @@ def cached_completion(language: str, context: str, prompt: str):
      │ 3. Root cause hypothesis       │
      │ 4. Suggested actions           │
      │ 5. Runbook link                │
-     └────────────────────────────────┘</code></p>
+     └────────────────────────────────┘</pre></p>
 <h3 id="model-selection-for-4gb-vram-fault-analysis">Model Selection for 4GB VRAM (Fault Analysis)</h3>
 <p>Use <strong>TinyLlama 1.1B</strong> (1.2GB VRAM):
 - Smaller = faster response (critical for alerts)
