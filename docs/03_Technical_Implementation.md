@@ -1,6 +1,8 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
+Author: James Sparenberg (@linuxrebel)
+Copyright: 2026 James Sparenberg
 
-# SML/SLM Technical Implementation Guide
+# SML/SLM Technical Implementation Guide Guide
 ## Practical Deployment, Fine-tuning, and Optimization
 
 ---

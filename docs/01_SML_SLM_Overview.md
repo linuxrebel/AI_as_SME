@@ -1,4 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
+Author: James Sparenberg (@linuxrebel)
+Copyright: 2026 James Sparenberg
 
 # SML/SLM (Small Language Models) Research Summary
 ## Expert Domain-Specific AI with Local Deployment

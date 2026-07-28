@@ -1,4 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
+Author: James Sparenberg (@linuxrebel)
+Copyright: 2026 James Sparenberg
 
 # Practical SLM Applications: Onboarding, Programming & Fault Analysis
 ## CPU-Only Deployment with 4GB VRAM Constraints

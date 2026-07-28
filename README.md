@@ -278,12 +278,14 @@ All three:
 
 This work is licensed under the **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)** License.
 
+**Attribution:** James Sparenberg (@linuxrebel)
+
 You are free to:
 - **Share** — copy and redistribute the material in any medium or format
 - **Adapt** — remix, transform, and build upon the material for any purpose, even commercially
 
 Under the following terms:
-- **Attribution** — You must give appropriate credit and indicate changes made
+- **Attribution** — You must give appropriate credit to James Sparenberg and indicate changes made
 - **ShareAlike** — Derivatives must use the same license (CC BY-SA 4.0)
 
 **Full Legal Text**: https://creativecommons.org/licenses/by-sa/4.0/legalcode

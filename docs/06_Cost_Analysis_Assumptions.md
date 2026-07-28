@@ -1,4 +1,6 @@
 SPDX-License-Identifier: CC-BY-SA-4.0
+Author: James Sparenberg (@linuxrebel)
+Copyright: 2026 James Sparenberg
 
 # Architectural Assumptions in Cost Analysis
 ## Breaking Down the Hidden Assumptions Behind the Numbers
