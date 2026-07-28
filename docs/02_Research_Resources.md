@@ -1,3 +1,5 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+
 # SML/SLM Research Resources & URLs
 ## Academic Papers, Articles, and Reference Materials
 

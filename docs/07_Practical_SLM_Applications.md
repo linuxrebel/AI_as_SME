@@ -1,3 +1,5 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+
 # Practical SLM Applications: Onboarding, Programming & Fault Analysis
 ## CPU-Only Deployment with 4GB VRAM Constraints
 

@@ -1,3 +1,5 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+
 # SML/SLM (Small Language Models) Research Summary
 ## Expert Domain-Specific AI with Local Deployment
 

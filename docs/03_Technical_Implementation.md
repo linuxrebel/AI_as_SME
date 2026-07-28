@@ -1,3 +1,5 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+
 # SML/SLM Technical Implementation Guide
 ## Practical Deployment, Fine-tuning, and Optimization
 

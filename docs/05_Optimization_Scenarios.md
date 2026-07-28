@@ -1,3 +1,5 @@
+SPDX-License-Identifier: CC-BY-SA-4.0
+
 # Optimization Scenarios for Top SLM Models
 ## Phi-3 Mini, Mistral 7B, TinyLlama, Qwen 262K
 
