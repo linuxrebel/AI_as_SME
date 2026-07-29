@@ -19,7 +19,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            
             margin: 0 auto;
             background: white;
             padding: 40px;
@@ -155,7 +155,7 @@
         
         strong { font-weight: 600; }
         
-        @media (max-width: 768px) {
+        @media () {
             .container {
                 padding: 20px;
             }
@@ -261,7 +261,7 @@
 <hr />
 <h2 id="use-case-1-employee-onboarding-chatbot">Use Case 1: Employee Onboarding Chatbot</h2>
 <h3 id="architecture">Architecture</h3>
-<p><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">┌─────────────────────────────────────────────────────────────┐
+<p><pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;">┌─────────────────────────────────────────────────────────────┐
 │                      New Employee                           │
 │  "What's our vacation policy?" "How do I add my direct      │
 │   "How do I submit expenses?"  report in the system?"       │
@@ -306,7 +306,7 @@
 - Department procedures (code of conduct, security)
 - Department-specific (engineering onboarding, sales onboarding)</p>
 <p><strong>Example training data format</strong>:
-<pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">json
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;">json
 {
   "question": "What's our annual vacation allowance?",
   "answer": "US employees get 20 days/year. Europe gets 25+ per local law. Accrual: 1.67 days/month.",
@@ -405,7 +405,7 @@ FINETUNE
 ```</p>
 <h3 id="runtime-setup-4gb-vram-system">Runtime Setup (4GB VRAM System)</h3>
 <p><strong>Hardware allocation</strong>:
-<code>Total: 4GB VRAM
+<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">Total: 4GB VRAM
 ├── Phi-3 Mini (4-bit quantized): 2.5GB
 ├── Vector DB (Chroma/Weaviate in-memory): 800MB
 ├── OS + Python runtime: 500MB
@@ -437,14 +437,14 @@ chroma = chromadb.Client(Settings(
     # 1. Retrieve context (RAG)
     results = chroma.query(query_texts=[question], n_results=3)
     context = "\n".join(results["documents"][0])</p>
-<pre><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;"># 2. Generate answer
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"># 2. Generate answer
 prompt = f"""You are an HR onboarding assistant. Answer based on company policy.
 </code></pre>
 <p>Company Policy Context:
 {context}</p>
 <p>Employee Question: {question}</p>
 <p>Answer (be specific, cite policy, offer escalation if uncertain):"""</p>
-<pre><code>response = client.generate(
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">response = client.generate(
     model="phi3-onboarding",
     prompt=prompt,
     stream=False
@@ -590,7 +590,7 @@ return response["response"]
 - Internal wiki/best practices</p>
 <h3 id="implementation-vs-code-extension">Implementation: VS Code Extension</h3>
 <p><strong>Architecture</strong>:
-<code>VS Code Editor
+<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">VS Code Editor
      │
      ▼
 ┌─────────────────────────────┐
@@ -633,7 +633,7 @@ import fetch from 'node-fetch';</p>
                     Math.max(0, position.line - 10), 0,
                     position.line, position.character
                 ));</p>
-<pre><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">            // Query local SLM
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;">            // Query local SLM
             const response = await fetch('http://localhost:8000/complete', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -669,7 +669,7 @@ async def complete_code(request: dict):
     language = request["language"]
     context = request["context"]
     prompt = request["prompt"]</p>
-<pre><code># Route to language-specific model
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;"># Route to language-specific model
 model_map = {
     "python": "phi3-python",
     "go": "tinyllama-go",
@@ -693,7 +693,7 @@ return {"completion": completion}
 </code></pre>
 <p>```</p>
 <h3 id="resource-usage-python-model-4gb-vram">Resource Usage: Python Model (4GB VRAM)</h3>
-<p><code>Model loaded: Phi-3 Mini (Python-specific): 2.5GB
+<p><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">Model loaded: Phi-3 Mini (Python-specific): 2.5GB
 VS Code running: 500MB
 Vector DB (optional, for docs): 400MB
 OS/headroom: 600MB
@@ -777,7 +777,7 @@ import time</p>
         }
         self.current_model = None
         self.load_history = {}</p>
-<pre><pre style="background: #1e1e2e; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea;">def get_file_extension(self, filepath):
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;">def get_file_extension(self, filepath):
     return Path(filepath).suffix
 
 def load_model(self, filepath):
@@ -843,7 +843,7 @@ def cached_completion(language: str, context: str, prompt: str):
 <p>Ideal approach: AI that <strong>knows your system's topology, past incidents, and fixes</strong>.</p>
 <h3 id="slm-solution-fine-tuned-fault-analyzer">SLM Solution: Fine-tuned Fault Analyzer</h3>
 <p><strong>Architecture</strong>:
-<code>System Failure
+<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">System Failure
      │
      ├─ Logs (stdout, stderr, syslog)
      ├─ Metrics (CPU, memory, disk, latency)
@@ -885,7 +885,7 @@ def cached_completion(language: str, context: str, prompt: str):
 - Leaves 2.8GB for log storage + context window</p>
 <h3 id="training-data-500-past-incidents">Training Data: 500 Past Incidents</h3>
 <p><strong>Structure</strong> (JSONL format):
-<code>json
+<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">json
 {
   "incident_id": "INC-2026-001",
   "date": "2026-01-15T03:45:00Z",
@@ -899,7 +899,7 @@ def cached_completion(language: str, context: str, prompt: str):
   "prevention": "Add connection leak detector to CI/CD"
 }</code></p>
 <p><strong>Training examples</strong> (pairs for fine-tuning):
-<code>json
+<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">json
 {
   "question": "Logs: 'connection refused' from 10 services. Metrics: Database CPU 95%, Connections 145/150. What's happening?",
   "answer": "Likely database connection pool exhaustion. Action: 1) Check if long-running queries exist (SELECT COUNT(*) FROM pg_stat_activity WHERE state != 'idle'). 2) If yes, kill them (SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE duration &gt; 300). 3) If issue persists, restart DB connection pool. Runbook: wiki/db-pool-exhaustion"
@@ -917,7 +917,7 @@ logger = logging.getLogger("FaultAnalyzer")</p>
 <p>class FaultAnalyzer:
     def <strong>init</strong>(self):
         self.incident_db = {}  # Store diagnosed incidents</p>
-<pre><code>def get_recent_logs(self, service: str, minutes: int = 5):
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">def get_recent_logs(self, service: str, minutes: int = 5):
     """Fetch logs from centralized logging (e.g., ELK)"""
     # Pseudocode - actual implementation uses logging API
     logs = logging_client.query(f"""
@@ -984,7 +984,7 @@ Time: {datetime.now().isoformat()}</p>
 5. Prevention (what to add to CI/CD)</p>
 <p>Format as JSON.
 """</p>
-<pre><code>    # 3. Query fine-tuned SLM
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">    # 3. Query fine-tuned SLM
     response = client.generate(
         model="tinyllama-fault-analyzer",
         prompt=prompt,
@@ -1033,7 +1033,7 @@ def parse_response(self, response: str) -&gt; dict:
 def handle_alert(alert: dict):
     service = alert["labels"].get("service", "unknown")
     analysis = analyzer.analyze_fault(service, alert)</p>
-<pre><code># Send analysis to Slack
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;"># Send analysis to Slack
 notify_slack({
     "service": service,
     "severity": analysis["severity"],
@@ -1061,7 +1061,7 @@ for incident in pagerduty_client.list_incidents(
 ):
     # Get logs from monitoring system
     logs = fetch_incident_logs(incident["id"])</p>
-<pre><code># Extract metrics from snapshots
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"><code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;"># Extract metrics from snapshots
 metrics = incident.get("incident_metrics", {})
 
 training_pair = {
@@ -1154,7 +1154,7 @@ FINETUNING
 </tbody>
 </table>
 <p><strong>Example output</strong>:
-<code>json
+<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">json
 {
   "service": "api-server",
   "alert": "High latency - p95 &gt; 1000ms",
