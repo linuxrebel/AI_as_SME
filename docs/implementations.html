@@ -578,6 +578,37 @@ return response["response"]
 <p>{"question": "How do I create an async function in Python?",
  "answer": "import asyncio\nasync def fetch_data(url):\n    # async code here\n    await asyncio.sleep(1)\n    return data\n\n# Call: asyncio.run(fetch_data(url))"}
 ```</p>
+<h3 id="implementation-notes-from-a-real-build">Implementation Notes: Lessons from a Real Local Build</h3>
+<p>Building this exact use case (phi-3-mini-4k-instruct + LoRA on Python QA pairs) surfaced a few gaps between the plan above and what actually works. Recorded here so the next attempt doesn't rediscover them the hard way.</p>
+<p><strong>1. phi-3's attention layers aren't named q_proj/v_proj.</strong><br />
+The <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">target_modules=["q_proj", "v_proj"]</code> shown earlier in this doc is a Llama-style naming convention. phi-3-mini-4k-instruct fuses attention into <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">qkv_proj</code> and <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">o_proj</code> instead — LoRA fails outright ("Target modules not found") until the config is corrected to match:</p>
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;">lora_config = LoraConfig(
+    r=8,
+    lora_alpha=16,
+    target_modules=["qkv_proj", "o_proj"],
+    lora_dropout=0.05,
+    bias="none",
+)</pre>
+<p>If fine-tuning a different base model, check its actual module names first (iterate <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">model.named_modules()</code>) rather than assuming Llama-style naming.</p>
+<p><strong>2. Labels must mask padding and include a real EOS token, or the run is a silent waste of compute.</strong><br />
+Copying <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">labels = input_ids.copy()</code> straight from a padded batch trains the model to predict padding tokens too — and if the tokenizer's pad token is the same ID as its EOS token (common), this actively teaches the model the wrong thing about where an answer ends. Symptom: training loss stays flat around a very high value (worse than random-uniform-over-vocab) for the entire run, and at inference the model never stops generating — it loops, repeating the same answer until it hits the token limit. Fix: mask every padding position to <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">-100</code> (ignored by the loss) and append the tokenizer's real EOS token to the end of every training example:</p>
+<pre style="background: #f5f5f5; color: #333; padding: 15px; border-radius: 5px; overflow-x: auto; border-left: 3px solid #667eea; font-family: monospace; font-size: 1em; line-height: 1.4;"># when building each training string:
+text = f"Request: {question}\n\nPython code:\n{answer}{tokenizer.eos_token}"
+
+# when tokenizing a padded batch:
+labels = [
+    [tok if mask else -100 for tok, mask in zip(ids, attn)]
+    for ids, attn in zip(encoded["input_ids"], encoded["attention_mask"])
+]</pre>
+<p>After this fix, loss dropped from a flat ~15 to a real decreasing curve (1.6 &rarr; 0.5) over the run, and generation stopped cleanly after the answer instead of looping.</p>
+<p><strong>3. CPU-only training did not complete a single step in practice on this hardware.</strong><br />
+This doc's "2-4 hours on CPU" estimate did not hold for phi-3-mini fp32 LoRA training on a modern 16-core laptop CPU: a single training step (one micro-batch forward+backward) failed to complete even after a bounded 10-minute smoke test, confirmed via live process monitoring (state <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">R</code>, steady CPU usage, no deadlock — it was doing real work, just far too slowly at fp32 on this precision path). Loading the model 4-bit quantized (<code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">bitsandbytes</code>, <code style="background: #f5f5f5; color: #333; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 1em;">nf4</code>) onto a GPU that fits the 4GB VRAM budget this doc targets brought a single step down to ~11-25 seconds — a full 3-epoch run over ~750 examples (564 steps) completed in well under 4 hours. If CPU-only really is a hard constraint, budget for this being dramatically slower than the "hours" estimates here, and validate with a single-step smoke test (bounded with a hard timeout) before committing to a full run.</p>
+<p><strong>4. Long unattended runs need resumability, not just checkpointing.</strong><br />
+Two capabilities worth building in from the start rather than added after the first crash:</p>
+<ul>
+<li><strong>Resume an interrupted run from its last checkpoint</strong> (mid-training optimizer/scheduler state), so a crash or a needed reboot doesn't mean starting over from step 0.</li>
+<li><strong>Continue fine-tuning an already-trained adapter on newly added data only</strong>, instead of re-running the full dataset every time more training examples are collected. (Trade-off: training on new data alone risks the model drifting away from what it already learned on the older data — a full retrain on the combined dataset is safer if that matters more than time saved.)</li>
+</ul>
 <h3 id="deployment-python-model-hybrid-8020">Deployment: Python Model (Hybrid 80/20)</h3>
 <p><strong>Fine-tuning (80%)</strong>:
 - Your internal coding standards
