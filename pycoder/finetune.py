@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """LoRA fine-tune phi3 on Python QA pairs. Per docs/implementations.html Use Case 2A.
 
-Run inside /home/james/pycoder/venv (Python 3.14, torch/transformers/peft/datasets installed).
+Run inside a venv with torch/transformers/peft/datasets/bitsandbytes installed
+(see requirements.txt), e.g. `python3 -m venv venv && venv/bin/pip install -r requirements.txt`.
 
 Training data: python_training_data.jsonl, one JSON object per line:
   {"messages": [{"role": "user", "content": "Q"}, {"role": "assistant", "content": "A"}]}
